@@ -16,7 +16,7 @@ class ServiceProviderTest extends TestCase
     }
 
     /** @test */
-    public function it_registers_cache_attribute_facade()
+    public function it_registers_cachable_methods_facade()
     {
         $this->assertInstanceOf(MethodProxy::class, CachableMethods::getFacadeRoot());
     }

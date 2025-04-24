@@ -52,7 +52,7 @@ class CachableMethodsServiceProvider extends ServiceProvider
         // Publish the config file
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/cachable-methods.php' => config_path('cachable-methods.php'),
+                __DIR__ . '/../config/cachable-methods.php' => package_config_path('cachable-methods.php'),
             ], 'cachable-methods-config');
         }
     }
