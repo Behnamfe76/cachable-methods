@@ -1,0 +1,25 @@
+{
+    "name": "fereydooni/cachable-methods",
+    "description": "A php package for laravel apps to cache methods",
+    "type": "library",
+    "require": {
+        "pestphp/pest": "^2.36"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Fereydooni\\CachableMethods\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Behnam Fereydooni",
+            "email": "101217538+Behnamfe76@users.noreply.github.com"
+        }
+    ],
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
