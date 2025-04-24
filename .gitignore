@@ -5,3 +5,9 @@
 /coverage
 /logs
 /tmp
+.phpunit.result.cache
+composer.lock
+.idea
+.vscode
+.env
+*.cache
