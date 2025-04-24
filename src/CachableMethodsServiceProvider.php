@@ -7,8 +7,15 @@ namespace Fereydooni\CachableMethods;
 use Fereydooni\CachableMethods\Contracts\CacheHandlerInterface;
 use Fereydooni\CachableMethods\Services\CacheHandler;
 use Fereydooni\CachableMethods\Services\MethodProxy;
+use Illuminate\Contracts\Cache\Factory as CacheFactory;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Service provider for the CachableMethods package.
+ * 
+ * @property \Illuminate\Foundation\Application $app
+ */
 class CachableMethodsServiceProvider extends ServiceProvider
 {
     /**
@@ -24,7 +31,7 @@ class CachableMethodsServiceProvider extends ServiceProvider
         // Register the cache handler
         $this->app->singleton(CacheHandlerInterface::class, function ($app) {
             return new CacheHandler(
-                $app['cache'],
+                $app->make(CacheFactory::class),
                 $app['config']['cachable-methods']
             );
         });

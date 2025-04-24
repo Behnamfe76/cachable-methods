@@ -3,14 +3,19 @@
 namespace Fereydooni\CachableMethods\Tests;
 
 use Fereydooni\CachableMethods\CachableMethodsServiceProvider;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase as Orchestra;
 
+/**
+ * Base test case for all tests.
+ */
 abstract class TestCase extends Orchestra
 {
     /**
      * Get package providers.
      *
-     * @param \Illuminate\Foundation\Application $app
+     * @param Application $app
      * @return array<int, class-string>
      */
     protected function getPackageProviders($app): array
@@ -23,7 +28,7 @@ abstract class TestCase extends Orchestra
     /**
      * Define environment setup.
      *
-     * @param \Illuminate\Foundation\Application $app
+     * @param Application $app
      * @return void
      */
     protected function getEnvironmentSetUp($app): void

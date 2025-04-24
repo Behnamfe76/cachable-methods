@@ -20,11 +20,16 @@ class CacheHandler implements CacheHandlerInterface
 {
     /**
      * The cache repository instance.
+     *
+     * @var Repository
      */
     protected Repository $cache;
 
     /**
      * Create a new CacheHandler instance.
+     *
+     * @param CacheFactory $cacheFactory The cache factory instance
+     * @param array<string, mixed> $config Package configuration
      */
     public function __construct(
         protected CacheFactory $cacheFactory,
@@ -59,6 +64,7 @@ class CacheHandler implements CacheHandlerInterface
             $cacheKey = $this->generateCacheKey($object, $method, $parameters, $attribute);
             $ttl = $attribute->ttl ?? $this->config['default_ttl'] ?? 3600;
             
+            /** @var Repository|TaggedCache $cache */
             $cache = empty($attribute->tags) ? $this->cache : $this->cache->tags($attribute->tags);
             
             // Check if the value is already in the cache

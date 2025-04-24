@@ -5,7 +5,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "laravel/framework": "^10.0"
+        "laravel/framework": "^10.0",
+        "illuminate/support": "^10.0",
+        "illuminate/contracts": "^10.0",
+        "illuminate/cache": "^10.0"
     },
     "require-dev": {
         "pestphp/pest": "^2.36",
@@ -15,7 +18,10 @@
     "autoload": {
         "psr-4": {
             "Fereydooni\\CachableMethods\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
