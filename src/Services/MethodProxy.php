@@ -69,4 +69,15 @@ class MethodProxy
             $additionalParams
         );
     }
+    
+    /**
+     * Flush the cache by tags.
+     *
+     * @param array<string> $tags Tags to flush
+     * @return bool True if successfully flushed
+     */
+    public function flushByTags(array $tags): bool
+    {
+        return $this->cacheHandler->flushByTags($tags);
+    }
 } 

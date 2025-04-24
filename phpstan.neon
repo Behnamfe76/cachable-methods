@@ -3,5 +3,9 @@ parameters:
   paths:
     - src
     - tests
-  checkMissingIterableValueType: false
-  reportUnmatchedIgnoredErrors: false 
+  ignoreErrors:
+    - '#missingType.iterableValue#'
+  reportUnmatchedIgnoredErrors: false
+  
+includes:
+  - vendor/phpstan/phpstan/conf/bleedingEdge.neon 

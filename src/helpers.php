@@ -18,24 +18,42 @@ namespace Fereydooni\CachableMethods;
  * they are available when using this package outside of a full Laravel installation.
  */
 
-if (!function_exists('Fereydooni\CachableMethods\config_path')) {
-    /**
-     * Get the configuration path.
-     *
-     * This is a helper function to prevent errors in the service provider
-     * when the Laravel config_path() function is not available.
-     *
-     * @param  string  $path
-     * @return string
-     */
-    function config_path(string $path = ''): string
-    {
-        if (function_exists('config_path')) {
-            return \config_path($path);
-        }
+/**
+ * Determine if the given function exists in the global namespace.
+ *
+ * @param string $name
+ * @return bool
+ */
+function function_exists_in_global(string $name): bool
+{
+    return function_exists('\\' . $name);
+}
 
-        return app()->basePath() . '/config' . ($path ? '/' . $path : $path);
+/**
+ * Get the path to a configuration file.
+ *
+ * @param  string  $path
+ * @return string
+ */
+function package_config_path(string $path = ''): string
+{
+    if (function_exists_in_global('config_path')) {
+        // Call Laravel's config_path function if available
+        $configPath = call_user_func('\\config_path', $path);
+        if ($configPath !== null) {
+            return $configPath;
+        }
     }
+
+    // If Laravel's function isn't available, or returns null,
+    // use our own implementation
+    $app = function_exists_in_global('app') ? call_user_func('\\app') : null;
+    if ($app && method_exists($app, 'basePath')) {
+        return $app->basePath('config') . ($path ? DIRECTORY_SEPARATOR . $path : '');
+    }
+    
+    // Fallback for when we can't determine the path
+    return dirname(__DIR__, 4) . '/config' . ($path ? DIRECTORY_SEPARATOR . $path : '');
 }
 
 // Provide global helper to access application instance

@@ -1,6 +1,17 @@
 <?php
 
-use function env;
+// Helper function to handle env() if it doesn't exist
+if (!function_exists('env')) {
+    function env($key, $default = null) {
+        $value = getenv($key);
+        
+        if ($value === false) {
+            return $default;
+        }
+        
+        return $value;
+    }
+}
 
 return [
     /*

@@ -27,6 +27,7 @@ uses(TestCase::class)->in(__DIR__);
 */
 
 expect()->extend('toBeOne', function () {
+    /** @var \Pest\Expectation $this */
     return $this->toBe(1);
 });
 

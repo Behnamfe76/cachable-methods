@@ -6,6 +6,7 @@ namespace Fereydooni\CachableMethods\Services;
 
 use Fereydooni\CachableMethods\Attributes\Cacheable;
 use Fereydooni\CachableMethods\Contracts\CacheHandlerInterface;
+use Illuminate\Cache\TaggableStore;
 use Illuminate\Cache\TaggedCache;
 use Illuminate\Contracts\Cache\Factory as CacheFactory;
 use Illuminate\Contracts\Cache\Repository;
@@ -65,7 +66,7 @@ class CacheHandler implements CacheHandlerInterface
             $ttl = $attribute->ttl ?? $this->config['default_ttl'] ?? 3600;
             
             /** @var Repository|TaggedCache $cache */
-            $cache = empty($attribute->tags) ? $this->cache : $this->cache->tags($attribute->tags);
+            $cache = empty($attribute->tags) ? $this->cache : $this->getTaggedCache($attribute->tags);
             
             // Check if the value is already in the cache
             if ($cache->has($cacheKey)) {
@@ -89,6 +90,27 @@ class CacheHandler implements CacheHandlerInterface
             
             return $reflectionMethod->invokeArgs($object, $parameters);
         }
+    }
+
+    /**
+     * Get a tagged cache instance if available.
+     *
+     * @param array<string> $tags
+     * @return Repository|TaggedCache
+     * 
+     * @phpstan-ignore-next-line
+     */
+    protected function getTaggedCache(array $tags): Repository
+    {
+        if ($this->cache->getStore() instanceof TaggableStore) {
+            /** @var Repository&\Illuminate\Contracts\Cache\Repository $tagged */
+            $tagged = $this->cache->tags($tags);
+            return $tagged;
+        }
+        
+        // Log warning if the current cache store doesn't support tags
+        Log::warning('CachableMethods: Current cache driver does not support tags. Tags will be ignored.');
+        return $this->cache;
     }
 
     /**
@@ -141,7 +163,8 @@ class CacheHandler implements CacheHandlerInterface
     public function flushByTags(array $tags): bool
     {
         try {
-            if (method_exists($this->cache, 'tags')) {
+            if ($this->cache->getStore() instanceof TaggableStore) {
+                /** @phpstan-ignore-next-line */
                 $this->cache->tags($tags)->flush();
                 return true;
             }
